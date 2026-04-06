@@ -1,1 +1,30 @@
+#!/bin/bash
+
+echo "==============================="
+echo "        IP ROVER TOOL"
+echo "==============================="
+echo ""
+
+read -p "Enter an IP address: " ip
+
+if [[ -z "$ip" ]]; then
+    echo "Error: No IP entered."
+    exit 1
+fi
+
+echo ""
+echo "Fetching information for: $ip"
+echo "--------------------------------"
+
+response=$(curl -s "https://ipinfo.io/$ip/json")
+
+if [[ -z "$response" ]]; then
+    echo "Error: No data received. Check your internet connection."
+    exit 1
+fi
+
+echo "$response" | grep -E '"ip"|"hostname"|"city"|"region"|"country"|"loc"|"org"|"timezone"' | sed 's/[",]//g'
+
+echo "--------------------------------"
+echo "Lookup complete."
 
